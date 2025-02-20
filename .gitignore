@@ -1,0 +1,11 @@
+frontend/.dart_tool
+frontend/.idea
+frontend/android/
+frontend/android/.gradle/
+frontend/android/app/build/
+frontend/android/.idea/
+frontend/android/local.properties
+frontend/.metadata
+frontend/analysis_options.yaml
+frontend/pubspec.lock
+frontend/.env
