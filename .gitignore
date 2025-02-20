@@ -9,3 +9,7 @@ frontend/.metadata
 frontend/analysis_options.yaml
 frontend/pubspec.lock
 frontend/.env
+frontend/build
+
+
+backend/node_modules
