@@ -36,7 +36,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=tests123
       - POSTGRES_DB=mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # for persistance storage
     
+volumes:
+  postgres_data:
 
 # to build the container run : docker compose up --build 
 # and to remove : docker compose down
