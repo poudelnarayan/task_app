@@ -12,6 +12,11 @@ interface SignupBody {
     password: string;
 }
 
+interface LoginBody {
+    email: string;
+    password: string;
+}
+
 authRouter.post("/signup", async (req: Request<{},{},SignupBody>, res : Response) => {
     try {
         //get req body
@@ -34,6 +39,30 @@ authRouter.post("/signup", async (req: Request<{},{},SignupBody>, res : Response
         const [user] = await db.insert(users).values(newUser).returning();
         res.status(201).json(user);
 
+    } catch (e) {
+        res.status(500).json({ error: e });
+    }
+})
+
+
+authRouter.post("/signin", async (req: Request<{},{},LoginBody>, res : Response) => {
+    try {
+        //get req body
+      const { email , password} =   req.body;
+        //check if the user doensot exist 
+        const [existingUser] = await db.select().from(users).where(eq(users.email, email));
+        if (!existingUser) {
+            res.status(400).json({ msg: "User with the  email does not exist" });
+            return;
+        }
+        // hashed pw
+        const isMatch = await bcryptjs.compare(password, existingUser.password);
+        
+        if (!isMatch) {
+            res.status(400).json({ msg: "Incorrect password!" });
+            return;
+        }
+        res.json(existingUser);
     } catch (e) {
         res.status(500).json({ error: e });
     }
