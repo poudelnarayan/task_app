@@ -2,5 +2,6 @@
   "exec": "ts-node src/index.ts",
   "watch": ["src"],
   "ignore": ["dist/*"],
-  "ext": "ts"
+  "ext": "ts",
+  "legacyWatch" : true
 }
