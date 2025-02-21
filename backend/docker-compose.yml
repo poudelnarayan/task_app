@@ -1,6 +1,7 @@
 services:
   backend:
     container_name: task_backend_container
+    image: task_backend_image
     build:
       context: ./
     ports:
