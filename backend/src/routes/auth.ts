@@ -3,6 +3,7 @@ import { db } from "../db";
 import { NewUser, users } from "../db/schema";
 import { eq } from "drizzle-orm";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const authRouter = Router();
 
@@ -62,7 +63,9 @@ authRouter.post("/signin", async (req: Request<{},{},LoginBody>, res : Response)
             res.status(400).json({ msg: "Incorrect password!" });
             return;
         }
-        res.json(existingUser);
+        const token = jwt.sign({ id: existingUser.id }, "passwordKey", );
+        res.json({ ...existingUser, token });
+
     } catch (e) {
         res.status(500).json({ error: e });
     }
