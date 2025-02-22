@@ -6,6 +6,7 @@ import { RequestHandler } from "express";
 
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { auth, AuthRequest } from "../middleware/auth";
 
 const authRouter = Router();
 
@@ -113,8 +114,17 @@ authRouter.post(
   }
 );
 
-authRouter.get("/", (req, res) => {
-  res.send("Hey there! from auth");
+authRouter.get("/", auth, async (req: AuthRequest, res) => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ msg: "User not found" });
+      return;
+    }
+    const [user] = await db.select().from(users).where(eq(users.id, req.user));
+    res.json({ ...user, token: req.token });
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
 });
 
 export default authRouter;
