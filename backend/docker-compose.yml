@@ -11,9 +11,11 @@ services:
       - DATABASE_URL=postgresql://postgres:tests123@db:5432/mydb
     depends_on:
       - db
+    networks:
+      - app_network
       # there are four types of volumes
     volumes:
-      - .:/app  
+      - .:/app
       # volume 1: bind mounts 
       # -> basically maps a directory or file on the host system to the 
       # directory or file within the container 
@@ -24,8 +26,7 @@ services:
       # during its cycle , for e.g. our node modules 
       # its going to be generated on the go while building the image 
     command: npm run dev
-      
-  
+
   db:
     image: postgres:15
     container_name: postgres_container
@@ -38,9 +39,14 @@ services:
       - POSTGRES_DB=mydb
     volumes:
       - postgres_data:/var/lib/postgresql/data # for persistance storage
-    
+
 volumes:
   postgres_data:
 
-# to build the container run : docker compose up --build 
-# and to remove : docker compose down
+
+networks:
+  app_network:
+    driver: bridge
+
+# to build the container run : docker compose up --build       
+# and to remove : docker compose down      
